@@ -247,6 +247,7 @@
 					CefSharp.PostMessage('init')
 					
 					setInterval(() => {
+						console.log("Save");
 						CefSharp.PostMessage('save_tabs')
 					}, 5000)
 				} } catch { }
@@ -395,6 +396,8 @@
 					fontLigatures: flag,
 				});
 			}
+			
+
 
 			ShowErr = function (line, column, endline, endcolumn, errMessage) {
 				editor.revealPositionInCenter({ lineNumber: line, column: column });
@@ -443,7 +446,20 @@
 			Refresh = function () {
 				var text = getText();
 				setText("");
+				console.log("Refresh");
 				editor.trigger('keyboard', 'type', { text: text });
+			}
+			
+			window.onload = function() {
+				if (!localStorage.lastscript) {
+				  localStorage.lastscript = "-- Thank you for using LInjector!";
+				}
+				editor.setValue(localStorage.lastscript);
+				
+				setInterval(() => {
+					console.log("Save script");
+					localStorage.lastscript = String(editor.getValue());
+				}, 5000)
 			}
 
 		});
